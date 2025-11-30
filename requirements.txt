@@ -1,0 +1,6 @@
+streamlit
+pandas
+numpy
+msoffcrypto-tool
+openpyxl
+xlrd
