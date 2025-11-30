@@ -8,7 +8,7 @@ def format_dataframe(df):
     return df
 #data path 
 
-DATA_PATH = "/Users/harrietli/Documents/Repayment tools/vscode101/LMS_Version2/Tadata/updated_df.csv"#set it manually please
+DATA_PATH = "Tadata/updated_df.csv"#set it manually please
 
 today = datetime.today().strftime('%Y%m%d')
 # 缓存加载函数
