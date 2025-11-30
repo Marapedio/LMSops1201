@@ -5,16 +5,18 @@ from datetime import datetime
 #Set the sofr format
 def format_dataframe(df):
     df.iloc[:, 0] = pd.to_datetime(df.iloc[:, 0], errors='coerce')
-    df.iloc[:, 1:] = df.iloc[:, 1:].apply(pd.to_numeric, errors='coerce')
     return df
 #data path 
-DATA_PATH = "Streamlit/DataPage/Tadata/updated_df.csv"#set it manually please
+
+DATA_PATH = "/Users/harrietli/Documents/Repayment tools/vscode101/LMS_Version2/Tadata/updated_df.csv"#set it manually please
+
 today = datetime.today().strftime('%Y%m%d')
 # 缓存加载函数
 @st.cache_data
 def load_sofr_data():
     df = pd.read_csv(DATA_PATH)
     df['Calculation Date'] = pd.to_datetime(df['Calculation Date'], errors='coerce')
+    df['Calculation Date'] = df['Calculation Date'].dt.date
     return df
 sofr_df = load_sofr_data()
 

@@ -1,0 +1,53 @@
+from datetime import date, datetime, timedelta
+
+defaults = {
+    "drawdown_id": "",
+    "currency":"",
+    "sme_drawdown":date(1999, 1, 1),
+    "funder_drawdown": date(1999, 1, 1),
+    "last_funder_submission": date(1999, 1, 1),
+    "repayment_date": date(1999, 1, 1),
+    "sme_tenor":int(90),
+    "sme_mit":int(7),
+    "repayment_amount":0.00,
+    "outstanding_principal":0.00,
+    "principal": 0.00,
+    "bank_charge":0.00,
+    "sme_intrate":"",
+    "intmethod":"",
+    "sme_sysint":0.00,
+    "sme_sysodint":0.00,
+    "waived_bankcharge": 0.00,
+    "waived_smeint": 0.00,
+    "waived_smeodint": 0.00,
+    "surcharge_item": 0.00,
+    "rtb_sys":0.00,
+    "funder_id":"",
+    "funder_sysint":0.00,
+    "funder_intrate":0.00,
+    "platform_fee":0.00,
+    "funder_sysallocation":0.00,
+    "spreading_sysint":0.00
+}
+
+maker_data = {
+        "Date": "",
+        "Repayment Date": "",
+        "Drawdown ID": "",
+        "Nature": "",
+        "Funder Code": "",
+        "Currency": "",
+        "Principal": "",
+        "Interest": "",
+        "Platform Fee": "",
+        "Spreading": "",
+        "Total Amount": "",
+        "Sub": "",
+        "Transfer Acc": "",
+        "CSV": "",
+        "Maker": "",
+        "Checker": "",
+        "Approver": "",
+        "Note": "",
+        "Note2":""# this one is for csv reference number
+    }
