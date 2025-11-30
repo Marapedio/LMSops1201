@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import xlrd
 import numpy as np
-funder_format = pd.read_excel("/Users/harrietli/Documents/Repayment tools/vscode101/LMS_Version2/Tadata/funder_data.xlsx"
+funder_format = pd.read_excel("Tadata/funder_data.xlsx"
                               ,converters={"Account no.": lambda x: str(x).strip() if pd.notna(x) else None})
 
 
