@@ -4,7 +4,7 @@ from PIL import Image
 
 
 #---logo setting
-image_path = "/Users/harrietli/Documents/VScode/vscode101/Streamlit/DataPage/00images/"
+image_path = "00images/"
 logo_img = image_path+"FPops.png"
 icon_img = image_path+"penguin.png"
 st.logo(logo_img, icon_image=icon_img)
