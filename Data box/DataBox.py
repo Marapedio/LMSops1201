@@ -275,7 +275,6 @@ if output_button and raw_input.strip():
         if ratetype == "Fixed":
             floatsum = 0
             overduesum =0
-        st.write(principal_cal,sme_drawdown_cal,floatsum,hdays,funder_intrate)
         sme_interest = trunc((floatsum + funder_intrate * hdays) / 360 * principal_cal * 0.01, 2)
         if note == "Overdue":
             overdue_interest = trunc((overduesum + funder_intrate * overdue_hdays) / 360 * principal_cal * 0.01, 2)
@@ -283,7 +282,7 @@ if output_button and raw_input.strip():
             overdue_interest = 0
         
         sme_allinterest = sme_interest + overdue_interest
-        st.write(prdtype == "RFPO",sme_interest,overdue_interest)
+
     
         if prdtype == "RFPO" or funder_drawdown_cal == sme_drawdown_cal:
             funder_interest = sme_interest + overdue_interest
@@ -393,8 +392,8 @@ if output_button and raw_input.strip():
             maker_df = process_email_data(raw_input,today,maker_name)
     with col1:
         st.dataframe(maker_df)
-
-
+        st.write("SME Interest",sme_interest)
+        st.write("SME Overdue Interest",overdue_interest)
            
 #####For csv    
         second_row = maker_df.iloc[0]
