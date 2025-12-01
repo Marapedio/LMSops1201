@@ -255,15 +255,19 @@ if output_button and raw_input.strip():
             mit_fillrate = sofr_df.loc[(sofr_df['Calculation Date'] == repayment_date), float_rate].iloc[0]
             floatsum = (sme_mit  - hdays) * mit_fillrate + regul_floatsum
             hdays = sme_mit
+            st.write(hdays,floatsum,principal)
         elif repayment_date > expected_repaydate:
             note = "Overdue"
             overdue_hdays = (repayment_date - expected_repaydate).days
             overduesum = sofr_df.loc[(sofr_df['Calculation Date'] > expected_repaydate) & 
                                     (sofr_df['Calculation Date'] <= repayment_date), float_rate].sum()
+            st.write(hdays,overduesum,principal)
         else:
             note = "Normal"
             floatsum = regul_floatsum
+            st.write(hdays,floatsum,principal)
         st.write(hdays,floatsum,principal)
+        
         sme_interest = 0
         overdue_interest = 0
         if ratetype == "Fixed":
