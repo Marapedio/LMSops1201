@@ -156,7 +156,8 @@ with col1:
     if data_source == "Email":
         raw_input = st.text_area("Paste Your Data Here", height=120, key="raw_input")
     #can we add warnings here?
-
+# ------------------ Maker df Preparation ------------------------------------
+maker_df = pd.DataFrame([maker_data])
 # ------------------ Main PAGE: Column 1 ------------------------------------
 with col2:
     trade_panel= st.container(border=True)
@@ -227,7 +228,7 @@ with col2:
             with colpancol2:
                 funder_sysallocation= float(st.session_state["funder_sysallocation"])
                 spreading_sysint = st.number_input("FundPark Spreading", min_value=0.00, value=float(st.session_state["spreading_sysint"]), step=0.01,format="%.2f",key="spreading_sysint")
-
+maker_df["Principal"] = principal
 if output_button and raw_input.strip():
     if data_source == "LMS":
         with col1:
@@ -368,7 +369,7 @@ if output_button and raw_input.strip():
                     for w in warnings:
                         st.warning(w)
 
-            maker_df = pd.DataFrame([maker_data])
+
             maker_df["Date"] = today
             maker_df["Nature"] = "FP2.0"if data_source  == "Email" else opstype,
             maker_df["Maker"] =maker_name
@@ -376,7 +377,6 @@ if output_button and raw_input.strip():
             maker_df["Drawdown ID"] = drawdown_id
             maker_df["Funder Code"] = funder_id
             maker_df["Currency"] = currency
-            maker_df["Principal"] = principal
             maker_df["Interest"] = funder_sysint
             maker_df["Platform Fee"] = platform_fee
             maker_df["Spreading"] = spreading_sysint
