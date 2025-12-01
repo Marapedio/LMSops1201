@@ -274,7 +274,7 @@ if output_button and raw_input.strip():
         if ratetype == "Fixed":
             floatsum = 0
             overduesum =0
-        st.write(sme_drawdown_cal,floatsum,hdays)
+        st.write(sme_drawdown_cal,floatsum,hdays,funder_intrate)
         sme_interest = trunc((floatsum + funder_intrate * hdays) / 360 * principal_cal * 0.01, 2)
         if note == "Overdue":
             overdue_interest = trunc((overduesum + funder_intrate * overdue_hdays) / 360 * principal_cal * 0.01, 2)
@@ -282,7 +282,7 @@ if output_button and raw_input.strip():
             overdue_interest = 0
         
         sme_allinterest = sme_interest + overdue_interest
-
+        st.write(sme_interest,overdue_interest)
     
         if prdtype == "RFPO" or funder_drawdown_cal == sme_drawdown_cal:
             funder_interest = sme_interest + overdue_interest
