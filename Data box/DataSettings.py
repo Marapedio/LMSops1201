@@ -94,4 +94,6 @@ with col1:
                     file_name=f"hibor_{today}.csv",
                     mime='text/csv'
                 )
+        except Exception as e:
+            st.error(f"❌ Failed to load data：{e}")
 
