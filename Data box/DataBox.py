@@ -393,7 +393,7 @@ if output_button and raw_input.strip():
     with col1:
         st.dataframe(maker_df)
            
-#####For csv    
+  
         second_row = maker_df.iloc[0]
         row_str = '\t'.join([str(v) for v in second_row.values])
                         #For Copy Botton
