@@ -304,7 +304,10 @@ if output_button and raw_input.strip():
 
                 funder_interest = trunc((funder_regul_floatsum + funder_intrate * funder_hdays) / 360 * principal * 0.01, 2)*2
 #allocation part
+        
         waived_interest = waived_smeint + waived_smeodint
+        waived_interest = waived_interest * -1
+        waived_bankcharge = waived_bankcharge * -1
         if xdj_switch == 0:
             funder_interest += surcharge_item - waived_interest
             if funder_interest >= waived_bankcharge and fundertype == "Main":
