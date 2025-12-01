@@ -249,6 +249,7 @@ if output_button and raw_input.strip():
         hdays = (repayment_date - sme_drawdown_cal).days
         regul_floatsum = sofr_df.loc[(sofr_df['Calculation Date'] > sme_drawdown_cal) & 
                                     (sofr_df['Calculation Date'] <= repayment_date), float_rate].sum()
+        st.write(hdays,regul_floatsum,principal)
         overdue_interest = 0
         if repayment_date <= mit_repaydate:
             note = "MIT"
