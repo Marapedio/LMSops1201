@@ -248,6 +248,7 @@ if output_button and raw_input.strip():
         principal_cal = principal
 
 
+
         float_rate = 'Daily Calculated Blended HIBOR' if ratetype == 'HIBOR+' else 'SOFR'
         hdays = (repayment_date - sme_drawdown_cal).days
         regul_floatsum = sofr_df.loc[(sofr_df['Calculation Date'] > sme_drawdown_cal) & 
@@ -267,7 +268,7 @@ if output_button and raw_input.strip():
         else:
             note = "Normal"
             floatsum = regul_floatsum
-        
+        st.write(sme_drawdown_cal,floatsum,hdays)
         sme_interest = 0
         overdue_interest = 0
         if ratetype == "Fixed":
