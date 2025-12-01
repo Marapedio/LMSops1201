@@ -135,7 +135,7 @@ def get_rate_type(rate_info):
     elif "hibor" in rate_info.lower():
         return "HIBOR+"
     else:
-        return "N/A"
+        return "Fixed"
 
 # ------------------ Sider bar ------------------------------------
 opstype = st.sidebar.selectbox("OpsType", ["Repayment", "Rollover"], index=0)
