@@ -282,7 +282,7 @@ if output_button and raw_input.strip():
             overdue_interest = 0
         
         sme_allinterest = sme_interest + overdue_interest
-        st.write(sme_interest,overdue_interest)
+        st.write(prdtype == "RFPO",sme_interest,overdue_interest)
     
         if prdtype == "RFPO" or funder_drawdown_cal == sme_drawdown_cal:
             funder_interest = sme_interest + overdue_interest
