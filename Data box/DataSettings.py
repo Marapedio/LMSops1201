@@ -67,7 +67,7 @@ with col1:
 
             # 生成 HIBOR 数据
             hibor_csv_df = updated_df[['Calculation Date', 'Daily Calculated Blended HIBOR', 'Effective Blended HIBOR for SME']].copy()
-            hibor_csv_df = hibor_csv_df[hibor_csv_df['Calculation Date'] > pd.Timestamp('2024-08-18')]
+            hibor_csv_df = hibor_csv_df[hibor_csv_df['Calculation Date'] > date(2024, 8, 18)]
             hibor_csv_df = hibor_csv_df.rename(columns={'Calculation Date': 'Record Date'})
             hibor_csv_df['Record Date'] = pd.to_datetime(hibor_csv_df['Record Date'], errors='coerce').dt.strftime('%Y-%m-%d')
 
