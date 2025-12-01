@@ -228,7 +228,7 @@ with col2:
             with colpancol2:
                 funder_sysallocation= float(st.session_state["funder_sysallocation"])
                 spreading_sysint = st.number_input("FundPark Spreading", min_value=0.00, value=float(st.session_state["spreading_sysint"]), step=0.01,format="%.2f",key="spreading_sysint")
-maker_df["Principal"] = principal
+
 if output_button and raw_input.strip():
     if data_source == "LMS":
         with col1:
@@ -244,7 +244,8 @@ if output_button and raw_input.strip():
     #Calculation Part
         if prdtype == "RFPO":
             sme_drawdown_cal = last_funder_submission if last_funder_submission == date(1999, 1, 1) else sme_drawdown_cal
-            principal = outstanding_principal
+            principal_cal = outstanding_principal
+        principal_cal = principal
 
 
         float_rate = 'Daily Calculated Blended HIBOR' if ratetype == 'HIBOR+' else 'SOFR'
@@ -257,7 +258,6 @@ if output_button and raw_input.strip():
             mit_fillrate = sofr_df.loc[(sofr_df['Calculation Date'] == repayment_date), float_rate].iloc[0]
             floatsum = (sme_mit  - hdays) * mit_fillrate + regul_floatsum
             hdays = sme_mit
-            st.write(hdays,floatsum,principal)
         elif repayment_date > expected_repaydate:
             note = "Overdue"
             floatsum = regul_floatsum
@@ -274,9 +274,9 @@ if output_button and raw_input.strip():
             floatsum = 0
             overduesum =0
         
-        sme_interest = trunc((floatsum + funder_intrate * hdays) / 360 * principal * 0.01, 2)
+        sme_interest = trunc((floatsum + funder_intrate * hdays) / 360 * principal_cal * 0.01, 2)
         if note == "Overdue":
-            overdue_interest = trunc((overduesum + funder_intrate * overdue_hdays) / 360 * principal * 0.01, 2)
+            overdue_interest = trunc((overduesum + funder_intrate * overdue_hdays) / 360 * principal_cal * 0.01, 2)
         if note != "Overdue" or prdtype in ["PL-novd", "RFPO"]:
             overdue_interest = 0
         
@@ -292,7 +292,7 @@ if output_button and raw_input.strip():
             if ratetype == "Fixed":
                 funder_regul_floatsum = 0
             if funder_drawdown <= expected_repaydate:
-                funder_regulint = trunc((funder_regul_floatsum + funder_intrate * funder_hdays) / 360 * principal * 0.01, 2)
+                funder_regulint = trunc((funder_regul_floatsum + funder_intrate * funder_hdays) / 360 * principal_cal * 0.01, 2)
                 funder_odint = overdue_interest
                 funder_interest = funder_regulint + funder_odint
 
@@ -303,7 +303,7 @@ if output_button and raw_input.strip():
                 if ratetype == "Fixed":
                     funder_regul_floatsum = 0
 
-                funder_interest = trunc((funder_regul_floatsum + funder_intrate * funder_hdays) / 360 * principal * 0.01, 2)*2
+                funder_interest = trunc((funder_regul_floatsum + funder_intrate * funder_hdays) / 360 * principal_cal * 0.01, 2)*2
 #allocation part
         
         waived_interest = waived_smeint + waived_smeodint
@@ -377,6 +377,7 @@ if output_button and raw_input.strip():
             maker_df["Drawdown ID"] = drawdown_id
             maker_df["Funder Code"] = funder_id
             maker_df["Currency"] = currency
+            maker_df["Principal"] = principal
             maker_df["Interest"] = funder_sysint
             maker_df["Platform Fee"] = platform_fee
             maker_df["Spreading"] = spreading_sysint
