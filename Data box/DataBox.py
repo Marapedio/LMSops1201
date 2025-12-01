@@ -244,13 +244,7 @@ if output_button and raw_input.strip():
         if prdtype == "RFPO":
             sme_drawdown_cal = last_funder_submission if last_funder_submission == date(1999, 1, 1) else sme_drawdown_cal
             principal = outstanding_principal
-    #sme part
-        
-        hdays     = 0
-        floatsum  = 0.0
-        note      = "Normal"
-        overduesum = 0.0
-        overdue_interest = 0.0
+
 
         float_rate = 'Daily Calculated Blended HIBOR' if ratetype == 'HIBOR+' else 'SOFR'
         hdays = (repayment_date - sme_drawdown_cal).days
@@ -265,15 +259,13 @@ if output_button and raw_input.strip():
             st.write(hdays,floatsum,principal)
         elif repayment_date > expected_repaydate:
             note = "Overdue"
+            floatsum = regul_floatsum
             overdue_hdays = (repayment_date - expected_repaydate).days
             overduesum = sofr_df.loc[(sofr_df['Calculation Date'] > expected_repaydate) & 
                                     (sofr_df['Calculation Date'] <= repayment_date), float_rate].sum()
-            st.write(hdays,overduesum,principal)
         else:
             note = "Normal"
             floatsum = regul_floatsum
-            st.write(hdays,floatsum,principal)
-        st.write(hdays,floatsum,principal)
         
         sme_interest = 0
         overdue_interest = 0
