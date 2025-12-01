@@ -154,47 +154,129 @@ def parse_lms_to_dic(raw_input: str) -> dict:
 
 
 
-def process_email_data(text,today,maker_name):
-    # Split according to the title number
-    sections = text.split('\n')
-    fp2_parsed_data = {}
+def normalize_key(key: str) -> str:
+    """统一键名：小写、去掉句点/冒号、合并空格。"""
+    k = key.lower()
+    k = re.sub(r"[\\.:]", "", k)
+    k = re.sub(r"\\s+", " ", k).strip()
+    return k
+
+# 把各种可能的写法映射到“标准键名”
+CANONICAL_KEY_MAP = {
+    # Section 标题
+    "1 repayment details": "1. Repayment Details",
+    "2 settlement to funder": "2. Settlement to Funder",
+    "3 fundpark allocation": "3. FundPark Allocation",
+    "4 return to borrower": "4. Return to Borrower",
+
+    # Repayment Details
+    "repayment date": "Repayment Date",
+    "trade code": "Trade Code",
+    "payment currency": "Payment Currency",
+    "actual received amount": "Actual Received Amount",
+    "actural receviced amount": "Actual Received Amount",   # 邮件里的拼写
+    "actural received amount": "Actual Received Amount",
+    "actual receviced amount": "Actual Received Amount",
+    "payment type": "Payment Type",
+    "drawdown id": "Drawdown ID",
+
+    # Settlement to Funder
+    "funder sub account no": "Funder Sub Account No",       # 去掉句点后的统一写法
+    "settled loan amount": "Settled Loan Amount",
+    "settled interest": "Settled Interest",
+    "settled pf": "Settled PF",
+    "funder allocation": "Funder Allocation",
+
+    # FundPark Allocation
+    "fundpark allocation amount": "FundPark Allocation Amount",
+
+    # Return to Borrower
+    "rtb amount": "RTB Amount",
+    "bank name": "Bank Name",
+    "bank a/c name": "Bank A/C Name",
+    "bank a/c number": "Bank A/C Number",
+    "swift code": "SWIFT Code",
+}
+
+SECTION_PATTERN = re.compile(r"^(\\d)\\.\\s*(.+)$")
+
+def process_email_data(text: str, today: str, maker_name: str) -> pd.DataFrame:
+    """
+    解析新格式邮件正文，并返回 maker_df（单行 DataFrame）。
+    适配：Tab 分隔、键值分两行、拼写错误、大小写/标点差异。
+    """
+    lines = [l.rstrip() for l in text.splitlines()]
+    parsed = {}
     current_section = None
 
-    for line in sections:
-        if line.startswith(('1. ', '2. ', '3. ', '4. ', '5. ')):
-            current_section = line.strip()
-            fp2_parsed_data[current_section] = {}
-        elif current_section:
-            key_value = line.split('\t')
-            if len(key_value) == 2:
-                key = key_value[0].strip()
-                value = key_value[1].strip()
-                fp2_parsed_data[current_section][key] = value
-    
-        # Convert the parsed data dictionary to a pandas DataFrame
+    def canonical_section(name_raw: str) -> str:
+        norm = normalize_key(name_raw)
+        return CANONICAL_KEY_MAP.get(norm, name_raw.strip())
 
- 
+    def canonical_key(key_raw: str) -> str:
+        norm = normalize_key(key_raw)
+        return CANONICAL_KEY_MAP.get(norm, key_raw.strip())
+
+    i = 0
+    while i < len(lines):
+        line = lines[i].strip()
+        i += 1
+        if not line:
+            continue
+
+        # 捕获 Section 标题，例如 "1. Repayment Details"
+        m = SECTION_PATTERN.match(line)
+        if m:
+            sec_raw = f"{m.group(1)}. {m.group(2)}"
+            current_section = canonical_section(sec_raw)
+            parsed.setdefault(current_section, {})
+            continue
+
+        if current_section is None:
+            # 跳过章节之前的杂项
+            continue
+
+        # 解析键值：优先 Tab 分隔；否则视为“键在一行，值在下一行”
+        if "\\t" in line:
+            key, value = [x.strip() for x in line.split("\\t", 1)]
+        else:
+            key = line.strip()
+            # 向前看下一条非空行作为 value
+            value = ""
+            j = i
+            while j < len(lines):
+                nxt = lines[j].strip()
+                j += 1
+                if nxt:
+                    value = nxt
+                    break
+            i = j  # 指针前移到 value 之后
+
+        ck = canonical_key(key)
+        parsed.setdefault(current_section, {})[ck] = value.strip()
+
+    # 便捷安全取值
+    def get(sec: str, key: str) -> str:
+        return parsed.get(sec, {}).get(key, "")
+
     data = {
         "Date": [today],
-        "Repayment Date": [fp2_parsed_data["1. Repayment Details"]["Repayment Date"]],
-        "Trade Code": [fp2_parsed_data["1. Repayment Details"]["Trade Code"]],
-        "Nature": "FP2.0",
-        "Funder Code": [fp2_parsed_data["2. Settlement to Funder"]["Funder sub account no"]],
-        "Currency": [fp2_parsed_data["1. Repayment Details"]["Payment Currency"]],
-        "Principal": [fp2_parsed_data["2. Settlement to Funder"]["Settled Loan Amount"]],
-        "Interest": [fp2_parsed_data["2. Settlement to Funder"]["Settled Interest"]],
-        "Platform Fee": [fp2_parsed_data["2. Settlement to Funder"]["Settled PF"]],
-        "Spreading": [fp2_parsed_data["3. FundPark Allocation"]["FundPark Allocation Amount"]],
-        "Total Amount": [fp2_parsed_data["1. Repayment Details"]["Actual Received Amount"]],
+        "Repayment Date": [get("1. Repayment Details", "Repayment Date")],
+        "Trade Code": [get("1. Repayment Details", "Trade Code")],
+        "Nature": ["FP2.0"],
+        "Funder Code": [get("2. Settlement to Funder", "Funder Sub Account No")],
+        "Currency": [get("1. Repayment Details", "Payment Currency")],
+        "Principal": [get("2. Settlement to Funder", "Settled Loan Amount")],
+        "Interest": [get("2. Settlement to Funder", "Settled Interest")],
+        "Platform Fee": [get("2. Settlement to Funder", "Settled PF")],
+        "Spreading": [get("3. FundPark Allocation", "FundPark Allocation Amount")],
+        "Total Amount": [get("1. Repayment Details", "Actual Received Amount")],
         "Sub": [""],
-        "Transfer Acc": "",
+        "Transfer Acc": [""],
         "CSV": [""],
         "Maker": [maker_name],
-        "Checker":[""],
-        "Approver":["N/A"]
+        "Checker": [""],
+        "Approver": ["N/A"],
     }
 
-    maker_df= pd.DataFrame(data)
-
-
-    return maker_df
+    maker_df = pd.DataFrame(data)
