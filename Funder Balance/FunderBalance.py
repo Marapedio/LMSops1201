@@ -38,7 +38,7 @@ if dbs_file is not None:
 if lms_file is not None:
     lms_df = pd.read_excel(lms_file)
     lms_df['Currency'] = lms_df['Currency'].replace('CNH', 'CNY')  # 替换 CNH 为 CNY
-    selected_cols = ["Funder ID", "Currency", "Available Balance"]
+    selected_cols = ["Funder ID", "Currency", "Ledger Balance"]
     lms_df = lms_df[selected_cols]
 
     merged_df = funder_format.merge(
@@ -47,8 +47,8 @@ if lms_file is not None:
         right_on=["Funder ID", "Currency"],
         how="left"
     )
-    merged_df["LMS Amt"] = merged_df["Available Balance"]
-    funder_format = merged_df.drop(columns=["Funder ID", "Available Balance"])
+    merged_df["LMS Amt"] = merged_df["Ledger Balance"]
+    funder_format = merged_df.drop(columns=["Funder ID", "Ledger Balance"])
 
 # 显示原始数据
 with col1:
