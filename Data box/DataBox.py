@@ -227,7 +227,7 @@ with col2:
                 platform_fee = st.number_input("Platform Fee", max_value=0.00, value=float(st.session_state["platform_fee"]), step=0.01,format="%.2f",key="platform_fee")
             with colpancol2:
                 funder_sysallocation= float(st.session_state["funder_sysallocation"])
-                spreading_sysint = st.number_input("FundPark Spreading", min_value=0.00, value=float(st.session_state["spreading_sysint"]), step=0.01,format="%.2f",key="spreading_sysint")
+                spreading_sysint = st.number_input("FundPark Spreading", value=float(st.session_state["spreading_sysint"]), step=0.01,format="%.2f",key="spreading_sysint")
 
 if output_button and raw_input.strip():
     if data_source == "LMS":
