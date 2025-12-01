@@ -5,6 +5,7 @@ from datetime import datetime
 #Set the sofr format
 def format_dataframe(df):
     df.iloc[:, 0] = pd.to_datetime(df.iloc[:, 0], errors='coerce')
+    df.iloc[:, 0] = df.iloc[:, 0].dt.date
     return df
 #data path 
 
