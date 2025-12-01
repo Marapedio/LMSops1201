@@ -268,13 +268,13 @@ if output_button and raw_input.strip():
         else:
             note = "Normal"
             floatsum = regul_floatsum
-        st.write(sme_drawdown_cal,floatsum,hdays)
+
         sme_interest = 0
         overdue_interest = 0
         if ratetype == "Fixed":
             floatsum = 0
             overduesum =0
-        
+        st.write(sme_drawdown_cal,floatsum,hdays)
         sme_interest = trunc((floatsum + funder_intrate * hdays) / 360 * principal_cal * 0.01, 2)
         if note == "Overdue":
             overdue_interest = trunc((overduesum + funder_intrate * overdue_hdays) / 360 * principal_cal * 0.01, 2)
