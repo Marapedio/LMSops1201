@@ -353,7 +353,7 @@ if output_button and raw_input.strip():
                 warnings.append("⚠️ Fully settle failed: outstanding_principal - principal_amount < 10")
 
             left = principal + funder_sysint - platform_fee + spreading_sysint
-            right = funder_sysallocation
+            right = repayment_amount - bank_charge
             if abs(left - right)>0.001:
                 warnings.append(f"⚠️ Condition failed: cash flow mismatch — left side {left:.2f} ≠ right side {right:.2f}")
             if rtb_sys != 0:
@@ -381,7 +381,7 @@ if output_button and raw_input.strip():
             maker_df["Platform Fee"] = platform_fee
             maker_df["Spreading"] = spreading_sysint
             maker_df["Sub"] = bank_charge
-            maker_df["Total Amount"] = funder_sysallocation
+            maker_df["Total Amount"] = repayment_amount - bank_charge
             mxgap =  max(smegap,fundergap,spreadinggap)
             checker = "ok" if mxgap < threshold else "err"
             maker_df["Checker"] = f"{checker}: {round(mxgap,2)}"
