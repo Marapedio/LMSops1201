@@ -132,7 +132,7 @@ def get_funder_type(funder_id):
 def get_rate_type(rate_info):
     if "sofr" in rate_info.lower():
         return "SOFR+"
-    elif "hibor" in rate_info:
+    elif "hibor" in rate_info.lower():
         return "HIBOR+"
     else:
         return "N/A"
