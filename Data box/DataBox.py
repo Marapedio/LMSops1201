@@ -244,7 +244,14 @@ if output_button and raw_input.strip():
         if prdtype == "RFPO":
             sme_drawdown_cal = last_funder_submission if last_funder_submission == date(1999, 1, 1) else sme_drawdown_cal
             principal = outstanding_principal
-    #sme part   
+    #sme part
+        
+        hdays     = 0
+        floatsum  = 0.0
+        note      = "Normal"
+        overduesum = 0.0
+        overdue_interest = 0.0
+
         float_rate = 'Daily Calculated Blended HIBOR' if ratetype == 'HIBOR+' else 'SOFR'
         hdays = (repayment_date - sme_drawdown_cal).days
         regul_floatsum = sofr_df.loc[(sofr_df['Calculation Date'] > sme_drawdown_cal) & 
