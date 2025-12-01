@@ -95,6 +95,3 @@ with col1:
                     mime='text/csv'
                 )
 
-        except Exception as e:
-            st.error(f"❌ Failed to load data：{e}")
-
