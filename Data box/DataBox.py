@@ -360,9 +360,9 @@ if output_button and raw_input.strip():
                 warnings.append(f"⚠️ Condition failed: cash flow mismatch — left side {left:.2f} ≠ right side {right:.2f}")
             if rtb_sys != 0:
                 warnings.append(f"⚠️ Condition failed: rtb_sys should be 0, but is {rtb_sys}")
-            if fundertype == "Main" and sme_sysint == 0:
+            if fundertype == "Main" and funder_sysint == 0:
                 warnings.append("⚠️ Funder code violation: funder type is 'Main' but SME interest is 0 — main funders are expected to earn interest.")
-            if fundertype == "Zero" and sme_sysint != 0:
+            if fundertype == "Zero" and funder_sysint != 0:
                 warnings.append(f"⚠️ Funder code violation: funder type is 'Zero' but SME interest is {sme_sysint} — zero-interest funders should not earn interest.")
             st.session_state.warnings = warnings
             if warnings:
