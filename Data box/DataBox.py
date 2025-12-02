@@ -361,9 +361,9 @@ if output_button and raw_input.strip():
             if rtb_sys != 0:
                 warnings.append(f"⚠️ Condition failed: rtb_sys should be 0, but is {rtb_sys}")
             if fundertype == "Main" and funder_sysint == 0:
-                warnings.append("⚠️ Funder code violation: funder type is 'Main' but SME interest is 0 — main funders are expected to earn interest.")
+                warnings.append("⚠️ Funder code violation: funder type is 'Main' but Funder interest is 0 — main funders are expected to earn interest.")
             if fundertype == "Zero" and funder_sysint != 0:
-                warnings.append(f"⚠️ Funder code violation: funder type is 'Zero' but SME interest is {sme_sysint} — zero-interest funders should not earn interest.")
+                warnings.append(f"⚠️ Funder code violation: funder type is 'Zero' but Funder interest is {funder_sysint} — zero-interest funders should not earn interest.")
             st.session_state.warnings = warnings
             if warnings:
                 with st.expander("⚠️ Warnings"):
