@@ -427,11 +427,7 @@ if output_button and raw_input.strip():
 
         components.html(styled_button, heght=120)
         
-        numbers = re.findall(r"\d+\.?\d*", sme_intrate)
-        
-        # 如果只需要最后一个数字
-        result = float(numbers[-1]) if numbers else None
-        st.write(result)
+        st.write(re.findall(r"\d+\.?\d*", sme_intrate))
         st.write("SME Interest",sme_interest)
         st.write("SME Overdue Interest",overdue_interest)
 
