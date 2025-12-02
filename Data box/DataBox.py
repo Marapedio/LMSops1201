@@ -109,7 +109,7 @@ def trunc(num, digits):
 def get_prdtype(drawdown_id):
     s = "" if drawdown_id is None else str(drawdown_id)
     s_norm = s.strip().upper()
-    zero_overdue = ['-COS-PL','-COSB-PL','-VEH-PL','-3CP-PL','PLCOS','PLCOS','PLPV','PL3C','NSDPL']#nooverdue
+    zero_overdue = ['-APF-PL','-FNB-PL']#nooverdue
     rfpo_code = ['-IMP-RF','-IMP-PO','-LOG-RF']#RFPO
 
     if any(code in s_norm for code in (c.upper() for c in zero_overdue)):
