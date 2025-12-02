@@ -175,6 +175,9 @@ with col2:
             sme_intrate = st.session_state["sme_intrate"]
             st.metric(label="Calculation Method: ", value=sme_intrate)
             funder_intrate = st.session_state["funder_intrate"]
+            if funder_intrate == 0:
+                numbers = re.findall(r"\d+\.?\d*", sme_intrate)
+                funder_intrate = float(numbers[-1])
             st.metric(label="Interest Rate: ", value=funder_intrate)
          
     with st.expander("Date Information", expanded=True):
@@ -427,8 +430,6 @@ if output_button and raw_input.strip():
 
         components.html(styled_button, height=120)
 
-        numbers = re.findall(r"\d+\.?\d*", sme_intrate)
-        st.write(numbers[-1])
         st.write("SME Interest",sme_interest)
         st.write("SME Overdue Interest",overdue_interest)
 
