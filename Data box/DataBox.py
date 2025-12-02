@@ -425,7 +425,7 @@ if output_button and raw_input.strip():
                     <div id="copied" class="copy-msg"></div>
                     """
 
-        components.html(styled_button, heght=120)
+        components.html(styled_button, height=120)
         
         st.write("SME Interest",sme_interest)
         st.write("SME Overdue Interest",overdue_interest)
