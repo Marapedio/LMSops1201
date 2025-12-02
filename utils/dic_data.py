@@ -3,7 +3,6 @@ from datetime import date, datetime, timedelta
 defaults = {
     "drawdown_id": "",
     "currency":"",
-    "settle_type":"",
     "sme_drawdown":date(1999, 1, 1),
     "funder_drawdown": date(1999, 1, 1),
     "last_funder_submission": date(1999, 1, 1),
