@@ -172,13 +172,14 @@ with col2:
             st.metric(label="Funder ID: ", value=funder_id)
         with tradepancol2:
             xdj_switch = st.toggle("小店金", value=False)
+            settle_type=st.session_state["settle_type"]
+            st.metric(label="Repayment Type: ", value=settle_type)
             sme_intrate = st.session_state["sme_intrate"]
             st.metric(label="Calculation Method: ", value=sme_intrate)
             funder_intrate = st.session_state["funder_intrate"]
             if funder_intrate == 0:
                 numbers = re.findall(r"\d+\.?\d*", sme_intrate)
                 funder_intrate = float(numbers[-1]) if numbers else None
-            st.metric(label="Interest Rate: ", value=funder_intrate)
          
     with st.expander("Date Information", expanded=True):
         #Repayment_date
