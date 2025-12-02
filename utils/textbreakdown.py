@@ -107,7 +107,6 @@ def parse_lms_to_dic(raw_input: str) -> dict:
         # 基本信息
         "drawdown_id": str(safe_pick("Drawdown ID", "Payment Details", default=None)),
         "currency": str(safe_pick("Repayment Currency", "Payment Details", default=None)),
-        "settle_type": str(safe_pick("Repayment Type", "Payment Details", default=None)),
 
         # 日期：均为 datetime.date 或 None
         "sme_drawdown": safe_pick("SME Disbursement Date", "Payment Details", default=None),
