@@ -177,7 +177,7 @@ with col2:
             funder_intrate = st.session_state["funder_intrate"]
             if funder_intrate == 0:
                 numbers = re.findall(r"\d+\.?\d*", sme_intrate)
-                funder_intrate = float(numbers[-1])
+                funder_intrate = float(numbers[-1]) if numbers else None
             st.metric(label="Interest Rate: ", value=funder_intrate)
          
     with st.expander("Date Information", expanded=True):
