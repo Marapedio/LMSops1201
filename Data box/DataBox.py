@@ -426,6 +426,7 @@ if output_button and raw_input.strip():
                     """
 
         components.html(styled_button, height=120)
+        st.write("SME Drawdown cal", sme_drawdown_cal)
         st.write("SME Interest",sme_interest)
         st.write("SME Overdue Interest",overdue_interest)
 
