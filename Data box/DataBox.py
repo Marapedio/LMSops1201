@@ -427,7 +427,6 @@ if output_button and raw_input.strip():
 
         components.html(styled_button, heght=120)
         
-        st.write(re.findall(r"\d+\.?\d*", sme_intrate))
         st.write("SME Interest",sme_interest)
         st.write("SME Overdue Interest",overdue_interest)
 
