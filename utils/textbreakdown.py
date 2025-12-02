@@ -140,7 +140,7 @@ def parse_lms_to_dic(raw_input: str) -> dict:
         # 资金方
         "funder_id": str(safe_pick("Funder ID", "Funder Information", default=None)),
         "funder_sysint": safe_pick("Interest (I + OI)", "Funder Transaction", default=0.0),
-        "funder_intrate": safe_pick(Interest Rate (% p.a.))", "Funder Transaction", default=0.0),
+        "funder_intrate": safe_pick("Interest Rate (% p.a.)", "Funder Transaction", default=0.0),
         "platform_fee": negate_abs(safe_pick("Platform Fee", "Funder Transaction", default=None)),
         "funder_sysallocation": float(safe_pick("Total Allocation", "Funder Transaction", default=None)),
 
