@@ -100,9 +100,6 @@ def parse_lms_to_dic(raw_input: str) -> dict:
     surcharge_series = df.loc[df["section"] == "Surcharge Items", "value"]
     # 将可解析项转 float，失败的变为 NaN，然后 sum() 跳过 NaN
     surcharge_sum = pd.to_numeric(surcharge_series, errors='coerce').sum() if not surcharge_series.empty else 0.0
-    funder_intrate = re.findall(r"\d+\.?\d*",safe_pick("Interest Rate (% p.a.)", "SME Information", default=None)）
-    
-    
     
 
     # ---------- 7) 组装结果字典 ----------
@@ -143,7 +140,7 @@ def parse_lms_to_dic(raw_input: str) -> dict:
         # 资金方
         "funder_id": str(safe_pick("Funder ID", "Funder Information", default=None)),
         "funder_sysint": safe_pick("Interest (I + OI)", "Funder Transaction", default=0.0),
-        "funder_intrate": float(funder_intrate),
+        "funder_intrate": safe_pick(Interest Rate (% p.a.))", "Funder Transaction", default=0.0),
         "platform_fee": negate_abs(safe_pick("Platform Fee", "Funder Transaction", default=None)),
         "funder_sysallocation": float(safe_pick("Total Allocation", "Funder Transaction", default=None)),
 
