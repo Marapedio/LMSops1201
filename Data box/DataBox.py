@@ -7,7 +7,7 @@ from utils.textbreakdown import parse_lms_to_dic
 from utils.textbreakdown import process_email_data
 from utils.dic_data import defaults
 from utils.dic_data import maker_data
-
+import re
 # ------------------ Session State Initialization ------------------
 today = date.today().strftime('%Y-%m-%d')
 for k, v in defaults.items():
