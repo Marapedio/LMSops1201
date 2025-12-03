@@ -229,7 +229,8 @@ def process_email_data(text,today,maker_name):
 
     data = {
             "Date": [today],
-            "Repayment Date": [df.loc[df['Key'] == 'Repayment Date', 'Value'].iloc[0]],
+            "Repayment Date": [
+pd.to_datetime(df.loc[df['Key'] == 'Repayment Date', 'Value'].iloc[0],dayfirst=True).strftime("%Y-%m-%d")],
             "Trade Code": [df.loc[df['Key'] == 'Drawdown ID', 'Value'].iloc[0]],
             "Nature": ["FP2.0"],
             "Funder Code": [df.loc[df['Key'] == 'Funder Sub Account No.', 'Value'].iloc[0]],
