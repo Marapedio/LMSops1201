@@ -156,46 +156,98 @@ def parse_lms_to_dic(raw_input: str) -> dict:
 
 
 def process_email_data(text,today,maker_name):
-    # Split according to the title number
-    sections = text.split('\n')
-    fp2_parsed_data = {}
-    current_section = None
 
-    for line in sections:
-        if line.startswith(('1. ', '2. ', '3. ', '4. ', '5. ')):
-            current_section = line.strip()
-            fp2_parsed_data[current_section] = {}
-        elif current_section:
-            key_value = line.split('\t')
-            if len(key_value) == 2:
-                key = key_value[0].strip()
-                value = key_value[1].strip()
-                fp2_parsed_data[current_section][key] = value
-    
-        # Convert the parsed data dictionary to a pandas DataFrame
+    lines = [l.strip() for l in text.splitlines()]
 
- 
+    records = []
+    pending_key = None
+
+    # 分节标题（例如 "1. Repayment Details"），点后必须有空格，且标题以字母开头
+    section_pat = re.compile(r"^\s*(\d+)\.\s+[A-Za-z].+")
+
+    # 判断是否更像 Key（用于无 \t 行）
+    date_like = re.compile(r"^\d{2}/\d{2}/\d{4}$")
+    num_like = re.compile(r"^[\d,.]+$")
+
+    def is_key_line(s: str) -> bool:
+        if "\t" in s:
+            return True
+        has_alpha = any(c.isalpha() for c in s)
+        if not has_alpha:
+            return False
+        if date_like.match(s) or num_like.match(s):
+            return False
+        return True
+
+    for line in lines:
+        if not line:
+            continue
+
+        # 分节标题：直接作为一条记录，Value 为空
+        if section_pat.match(line):
+            # 若有悬挂的 key（上一行是 key 未配到 value），补空值
+            if pending_key is not None:
+                records.append({"Key": pending_key, "Value": ""})
+                pending_key = None
+            records.append({"Key": line, "Value": ""})
+            continue
+
+        # 同行 key-value
+        if "\t" in line:
+            key, value = [s.strip() for s in line.split("\t", 1)]
+            # 若之前有悬挂 key，先把它补空值，以避免顺序错乱
+            if pending_key is not None:
+                records.append({"Key": pending_key, "Value": ""})
+                pending_key = None
+            records.append({"Key": key, "Value": value})
+            continue
+
+        # 无 \t：键值分行处理
+        if pending_key is None:
+            # 当前行更像 Key：暂存，等待下一行做 Value
+            if is_key_line(line):
+                pending_key = line
+            else:
+                # 当前行更像 Value，但没有对应 key：直接记录为“(Unlabeled)”
+                records.append({"Key": "(Unlabeled)", "Value": line})
+        else:
+            # 有 pending_key：当前行优先视作它的值
+            if is_key_line(line):
+                # 连续出现两个 Key：前一个 Key 填空
+                records.append({"Key": pending_key, "Value": ""})
+                pending_key = line
+            else:
+                # 正常键值分行
+                records.append({"Key": pending_key, "Value": line})
+                pending_key = None
+
+    # 文本结束仍有悬挂 key，则补空值
+    if pending_key is not None:
+        records.append({"Key": pending_key, "Value": ""})
+
+    df = pd.DataFrame(records)
+
     data = {
-        "Date": [today],
-        "Repayment Date": [fp2_parsed_data["1. Repayment Details"]["Repayment Date"]],
-        "Trade Code": [fp2_parsed_data["1. Repayment Details"]["Trade Code"]],
-        "Nature": "FP2.0",
-        "Funder Code": [fp2_parsed_data["2. Settlement to Funder"]["Funder sub account no"]],
-        "Currency": [fp2_parsed_data["1. Repayment Details"]["Payment Currency"]],
-        "Principal": [fp2_parsed_data["2. Settlement to Funder"]["Settled Loan Amount"]],
-        "Interest": [fp2_parsed_data["2. Settlement to Funder"]["Settled Interest"]],
-        "Platform Fee": [fp2_parsed_data["2. Settlement to Funder"]["Settled PF"]],
-        "Spreading": [fp2_parsed_data["3. FundPark Allocation"]["FundPark Allocation Amount"]],
-        "Total Amount": [fp2_parsed_data["1. Repayment Details"]["Actual Received Amount"]],
-        "Sub": [""],
-        "Transfer Acc": "",
-        "CSV": [""],
-        "Maker": [maker_name],
-        "Checker":[""],
-        "Approver":["N/A"]
-    }
-
+            "Date": [today],
+            "Repayment Date": [df.loc[df['Key'] == 'Repayment Date', 'Value'].iloc[0]],
+            "Trade Code": [df.loc[df['Key'] == 'Drawdown ID', 'Value'].iloc[0]],
+            "Nature": "FP2.0",
+            "Funder Code": [df.loc[df['Key'] == 'Funder Sub Account No.', 'Value'].iloc[0]],
+            "Currency": [df.loc[df['Key'] == 'Payment Currency', 'Value'].iloc[0]],
+            "Principal": [df.loc[df['Key'] == 'Settled Loan Amount', 'Value'].iloc[0]],
+            "Interest": [df.loc[df['Key'] == 'Settled Interest', 'Value'].iloc[0]],
+            "Platform Fee": [df.loc[df['Key'] == 'Settled PF', 'Value'].iloc[0]],
+            "Spreading": [df.loc[df['Key'] == 'FundPark Allocation Amount', 'Value'].iloc[0]],
+            "Total Amount": [df.loc[df['Key'] == 'Actural Receviced Amount', 'Value'].iloc[0]],
+            "Sub": [""],
+            "Transfer Acc": "",
+            "CSV": [""],
+            "Maker": [maker_name],
+            "Checker":[""],
+            "Approver":["N/A"]
+        }
+    
     maker_df= pd.DataFrame(data)
 
-
     return maker_df
+
