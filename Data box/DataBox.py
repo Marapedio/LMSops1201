@@ -247,7 +247,7 @@ if output_button and raw_input.strip():
     #Calculation Part
         if prdtype == "RFPO":
             principal_cal = outstanding_principal
-            sme_drawdown_cal = last_funder_submission if last_funder_submission != date(1999, 1, 1) else sme_drawdown_cal
+            sme_drawdown_cal = last_funder_submission if last_funder_submission != date(1999, 1, 1) and last_funder_submission != sme_drawdown else sme_drawdown_cal
         else:
             principal_cal = principal
 
