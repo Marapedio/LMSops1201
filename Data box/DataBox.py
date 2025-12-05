@@ -195,6 +195,7 @@ with col2:
                 sme_mit_days = timedelta(days=int(sme_mit))
                 mit_repaydate = sme_drawdown_cal + sme_mit_days
                 repayment_date = st.date_input("Repayment date",value=st.session_state["repayment_date"],key="repayment_date")
+                maker_df['Repayment Date'] = repayment_date
                 if opstype == "Rollover":
                     repayment_date -= timedelta(days=1)
         with subcol2:
@@ -377,7 +378,6 @@ if output_button and raw_input.strip():
             maker_df["Date"] = today
             maker_df["Nature"] = "FP2.0"if data_source  == "Email" else opstype,
             maker_df["Maker"] =maker_name
-            maker_df['Repayment Date'] = repayment_date
             maker_df["Drawdown ID"] = drawdown_id
             maker_df["Funder Code"] = funder_id
             maker_df["Currency"] = currency
