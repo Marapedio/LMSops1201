@@ -121,7 +121,7 @@ def parse_lms_to_dic(raw_input: str) -> dict:
         # 金额类
         "repayment_amount": safe_pick("Repayment Amount", "Payment Details", default=0.0),
         "outstanding_principal": safe_pick("Outstanding Principal", "SME Transaction", default=0.0),
-        "principal": safe_pick("Principal", "SME Transaction", default=0.0),
+        "principal": safe_pick("Principal", "Funder Transaction", default=0.0),
         "bank_charge": safe_pick("Bank Charge", "Payment Details", default=0.0),
 
         # 利率/系统金额
