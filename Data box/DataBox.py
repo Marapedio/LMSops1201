@@ -158,6 +158,7 @@ with col1:
     #can we add warnings here?
 # ------------------ Maker df Preparation ------------------------------------
 maker_df = pd.DataFrame([maker_data])
+repayment_id = st.session_state["repayment_id"]
 # ------------------ Main PAGE: Column 1 ------------------------------------
 with col2:
     trade_panel= st.container(border=True)
@@ -390,6 +391,7 @@ if output_button and raw_input.strip():
             mxgap =  max(smegap,fundergap,spreadinggap)
             checker = "ok" if mxgap < threshold else "err"
             maker_df["Checker"] = f"{checker}: {round(mxgap,2)}"
+            maker_df["Note2"] = repayment_id
     if data_source == "Email":
         with col1:
             maker_df = process_email_data(raw_input,today,maker_name)
