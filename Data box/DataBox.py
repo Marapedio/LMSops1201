@@ -158,7 +158,6 @@ with col1:
     #can we add warnings here?
 # ------------------ Maker df Preparation ------------------------------------
 maker_df = pd.DataFrame([maker_data])
-repayment_id = st.session_state["repayment_id"]
 # ------------------ Main PAGE: Column 1 ------------------------------------
 with col2:
     trade_panel= st.container(border=True)
@@ -167,6 +166,7 @@ with col2:
         with tradepancol1:
             drawdown_id = st.session_state["drawdown_id"]
             st.metric(label="Drawdown ID: ", value=drawdown_id)
+            repayment_id = st.session_state["repayment_id"]
             currency = st.session_state["currency"]
             st.metric(label="Currency: ", value=currency)
             funder_id = st.session_state["funder_id"]
