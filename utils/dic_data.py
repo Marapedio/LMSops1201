@@ -2,6 +2,7 @@ from datetime import date, datetime, timedelta
 
 defaults = {
     "drawdown_id": "",
+    "repayment_id": "",
     "currency":"",
     "sme_drawdown":date(1999, 1, 1),
     "funder_drawdown": date(1999, 1, 1),
