@@ -241,7 +241,7 @@ if output_button and raw_input.strip():
                 st.session_state.prdtype_slider = get_prdtype(drawdown_id)
                 fundertype = st.sidebar.select_slider("Funder Type", options=["Main", "Zero", "Fixed"], value=st.session_state.fundertype_slider,label_visibility="collapsed", key="fundertype_slider")
                 ratetype = st.sidebar.select_slider("Rate Type", options=["SOFR+", "HIBOR+", "Fixed"],value=st.session_state.ratetype_slider,label_visibility="collapsed", key="ratetype_slider")
-                prdtype = st.sidebar.select_slider("Product Type", options=["Regular", "PL-novd", "RFPO"],value=st.session_state.prdtype_slider,label_visibility="collapsed", key="prdtype_slider")
+                prdtype = st.sidebar.select_slider("Product Type", options=["Regular", "RFPO"],value=st.session_state.prdtype_slider,label_visibility="collapsed", key="prdtype_slider")
 
     #Calculation Part
         if prdtype == "RFPO":
@@ -280,7 +280,7 @@ if output_button and raw_input.strip():
         sme_interest = trunc((floatsum + funder_intrate * hdays) / 360 * principal_cal * 0.01, 2)
         if note == "Overdue":
             overdue_interest = trunc((overduesum + funder_intrate * overdue_hdays) / 360 * principal_cal * 0.01, 2)
-        if note != "Overdue" or prdtype in ["PL-novd", "RFPO"]:
+        if note != "Overdue" or prdtype in ["RFPO"]:
             overdue_interest = 0
         
         sme_allinterest = sme_interest + overdue_interest
