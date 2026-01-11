@@ -355,17 +355,18 @@ if output_button and raw_input.strip():
             warnings = []
             if outstanding_principal - principal < 10 and outstanding_principal - principal > 0.01:
                 warnings.append("⚠️ Fully settle failed: outstanding_principal - principal_amount < 10")
-
-            left = principal + funder_sysint - platform_fee + spreading_sysint
+    
+            left = principal + funder_sysint - platform_fee + spreading_sysint + rtb_sys
             right = repayment_amount - bank_charge
             if abs(left - right)>0.001:
                 warnings.append(f"⚠️ Condition failed: cash flow mismatch — left side {left:.2f} ≠ right side {right:.2f}")
-            if rtb_sys != 0:
-                warnings.append(f"⚠️ Condition failed: rtb_sys should be 0, but is {rtb_sys}")
             if fundertype == "Main" and funder_sysint == 0:
                 warnings.append("⚠️ Funder code violation: funder type is 'Main' but Funder interest is 0 — main funders are expected to earn interest.")
             if fundertype == "Zero" and funder_sysint != 0:
                 warnings.append(f"⚠️ Funder code violation: funder type is 'Zero' but Funder interest is {funder_sysint} — zero-interest funders should not earn interest.")
+            if opstype == "Repayment":
+                if rtb_sys != 0:
+                    warnings.append(f"⚠️ Condition failed: rtb_sys should be 0, but is {rtb_sys}")
             st.session_state.warnings = warnings
             if warnings:
                 with st.expander("⚠️ Warnings"):
@@ -383,8 +384,12 @@ if output_button and raw_input.strip():
             maker_df["Interest"] = funder_sysint
             maker_df["Platform Fee"] = platform_fee
             maker_df["Spreading"] = spreading_sysint
-            maker_df["Sub"] = bank_charge
-            maker_df["Total Amount"] = repayment_amount - bank_charge
+            if opstype == "Repayment":
+                maker_df["Sub"] = bank_charge
+                maker_df["Total Amount"] = repayment_amount - bank_charge
+            if opstype == "Rollover":
+                maker_df["Sub"] = rtb_sys
+                maker_df["Total Amount"] = principal + funder_sysint + spreading_sysint + platform_fee
             mxgap =  max(smegap,fundergap,spreadinggap)
             checker = "ok" if mxgap < threshold else "err"
             maker_df["Checker"] = f"{checker}: {round(mxgap,2)}"
