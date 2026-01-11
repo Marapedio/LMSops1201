@@ -194,14 +194,15 @@ with col2:
                 mit_repaydate = sme_drawdown_cal + sme_mit_days
                 repayment_date = st.date_input("Repayment date",value=st.session_state["repayment_date"],key="repayment_date")
                 maker_df['Repayment Date'] = repayment_date
-                if opstype == "Rollover" and repayment_date != funder_drawdown:
-                    repayment_date -= timedelta(days=1)
+
         with subcol2:
             funder_date_panel = st.container(border=True)
             with funder_date_panel:
                 outstanding_principal = st.number_input("Outstanding Principal", min_value=0.00, value=float(st.session_state["outstanding_principal"]), step=0.01,format="%.2f",key="outstanding_principal")
                 funder_drawdown = st.date_input("Funder drawdown date",value=st.session_state["funder_drawdown"],key="funder_drawdown")
                 funder_drawdown_cal = adjust_drawdown(funder_drawdown)
+                if opstype == "Rollover" and repayment_date != funder_drawdown:
+                    repayment_date -= timedelta(days=1)
                 last_funder_submission = st.date_input("Last Funder Submission Date",value=st.session_state["last_funder_submission"],key="last_funder_submission")
         
     with st.expander("SME Repayment", expanded=True):
