@@ -194,7 +194,7 @@ with col2:
                 mit_repaydate = sme_drawdown_cal + sme_mit_days
                 repayment_date = st.date_input("Repayment date",value=st.session_state["repayment_date"],key="repayment_date")
                 maker_df['Repayment Date'] = repayment_date
-                if opstype == "Rollover":
+                if opstype == "Rollover" and repayment_date != funder_drawdown:
                     repayment_date -= timedelta(days=1)
         with subcol2:
             funder_date_panel = st.container(border=True)
