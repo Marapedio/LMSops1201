@@ -437,7 +437,7 @@ if output_button and raw_input.strip():
         if data_source == "LMS":
             st.write("SME Interest",sme_interest)
             st.write("SME Overdue Interest",overdue_interest)
-            st.write("Funder Drawdown", funder_drawdown_cal, repayment_date )
+            st.write("Funder Drawdown", funder_drawdown_cal, repayment_date, funder_hdays )
             st.write("Funder Interest",funder_interest)
 
 if output_button and not raw_input.strip():
