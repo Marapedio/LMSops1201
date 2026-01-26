@@ -281,7 +281,7 @@ if output_button and raw_input.strip():
         sme_interest = trunc((floatsum + funder_intrate * hdays) / 360 * principal_cal * 0.01, 2)
         if note == "Overdue":
             overdue_interest = trunc((overduesum + funder_intrate * overdue_hdays) / 360 * principal_cal * 0.01, 2)
-        if note != "Overdue" or prdtype == "RFPO":
+        if note != "Overdue":
             overdue_interest = 0
         
         sme_allinterest = sme_interest + overdue_interest
