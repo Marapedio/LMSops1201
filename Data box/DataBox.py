@@ -109,7 +109,7 @@ def trunc(num, digits):
 def get_prdtype(drawdown_id):
     s = "" if drawdown_id is None else str(drawdown_id)
     s_norm = s.strip().upper()
-    rfpo_code = ['-IMP-RF','-IMP-PO','-LOG-RF']#RFPO
+    rfpo_code = ['-IMP-RF','-IMP-PO','-LOG-RF','-LOG-PO']#RFPO
 
     if any(code in s_norm for code in (c.upper() for c in rfpo_code)) or s_norm.startswith(("F-", "P-")):
         return "RFPO"
