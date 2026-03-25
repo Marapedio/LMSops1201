@@ -438,7 +438,7 @@ if output_button and raw_input.strip():
             st.write("SME Interest",sme_interest)
             st.write("SME Overdue Interest",overdue_interest)
             st.write("Funder Interest",funder_interest)
-            st.write("interestsum",floatsum)
+            st.write("interestsum", regul_floatsum)
 
 if output_button and not raw_input.strip():
     with col1:
