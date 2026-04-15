@@ -43,7 +43,7 @@ today = date.today()
 def load_sofr_data() -> pd.DataFrame:
     df = pd.read_csv(DATA_PATH)
     # 统一成 Timestamp 再转成 date（保持你设定好的 date 格式）
-    df["Calculation Date"] = pd.to_datetime(df["Calculation Date"], errors="coerce").dt.date
+   df["Calculation Date"] = pd.to_datetime(df["Calculation Date"],errors="coerce",dayfirst=False).dt.date
     return df
 
 # 预加载（如果文件不存在，这里会报错；你也可以包 try/except）
