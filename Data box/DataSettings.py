@@ -94,6 +94,7 @@ with col1:
         try:
             # 读取并初步格式化（第1列转 Timestamp）
             raw_df = pd.read_excel(upload_file)
+            raw_df["Calculation Date"] = pd.to_datetime(raw_df["Calculation Date"], errors="coerce").dt.strftime("%Y-%m-%d")
             update_info_df = format_dataframe(raw_df)
 
             # 列名统一
