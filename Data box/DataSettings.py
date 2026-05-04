@@ -26,8 +26,9 @@ def to_ymd_string(series: pd.Series) -> pd.Series:
 # 你原有的格式化（保留）
 # -------------------------------
 def format_dataframe(df: pd.DataFrame) -> pd.DataFrame:
-    # 将第1列转成 Timestamp（后续我们再统一为 date）
-    df.iloc[:, 0] = pd.to_datetime(df.iloc[:, 0], errors='coerce')
+    df = df.copy()
+    if "Calculation Date" in df.columns:
+        df["Calculation Date"] = pd.to_datetime(df["Calculation Date"], errors="coerce")
     return df
 
 # -------------------------------
@@ -94,7 +95,6 @@ with col1:
         try:
             # 读取并初步格式化（第1列转 Timestamp）
             raw_df = pd.read_excel(upload_file)
-            raw_df["Calculation Date"] = pd.to_datetime(raw_df["Calculation Date"], errors="coerce").dt.strftime("%Y-%m-%d")
             update_info_df = format_dataframe(raw_df)
 
             # 列名统一
