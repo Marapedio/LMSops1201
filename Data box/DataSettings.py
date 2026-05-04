@@ -132,54 +132,6 @@ with col1:
 
             st.success(f"Updated: {last_date.strftime('%Y-%m-%d')}. 🔄 Please Re-import Interest Rate Info")
 
-            # -------------------------------
-            # 生成 SOFR 数据（展示/下载用字符串）
-            # -------------------------------
-            sofr_csv_df = updated_df[["Calculation Date", "SOFR", "SOFR Date"]].copy()
-            sofr_csv_df["Calculation Date"] = to_ymd_string(sofr_csv_df["Calculation Date"])
-            if "SOFR Date" in sofr_csv_df.columns:
-                sofr_csv_df["SOFR Date"] = to_ymd_string(sofr_csv_df["SOFR Date"])
-
-            # -------------------------------
-            # 生成 HIBOR 数据（筛选用 date；展示/导出用字符串）
-            # -------------------------------
-            hibor_csv_df = updated_df[
-                ["Calculation Date", "Daily Calculated Blended HIBOR", "Effective Blended HIBOR for SME"]
-            ].copy()
-
-            # 截取：两边用 date
-            cutoff_date = date(2024, 8, 18)
-            hibor_csv_df = hibor_csv_df[hibor_csv_df["Calculation Date"] > cutoff_date]
-
-            # 改列名并格式化展示
-            hibor_csv_df = hibor_csv_df.rename(columns={"Calculation Date": "Record Date"})
-            hibor_csv_df["Record Date"] = to_ymd_string(hibor_csv_df["Record Date"])
-
-            # -------------------------------
-            # 下载按钮
-            # -------------------------------
-            subcol1, subcol2 = st.columns(2)
-
-            with subcol1:
-                st.write("SOFR Data")
-                st.dataframe(sofr_csv_df)
-                st.download_button(
-                    label="download sofr csv",
-                    data=sofr_csv_df.to_csv(index=False).encode("utf-8"),
-                    file_name=f"sofr_{today.strftime('%Y%m%d')}.csv",
-                    mime="text/csv"
-                )
-
-            with subcol2:
-                st.write("HIBOR Data")
-                st.dataframe(hibor_csv_df)
-                st.download_button(
-                    label="download hibor csv",
-                    data=hibor_csv_df.to_csv(index=False).encode("utf-8"),
-                    file_name=f"hibor_{today.strftime('%Y%m%d')}.csv",
-                    mime="text/csv"
-                )
-
         except Exception as e:
             st.error(f"❌ Failed to load data：{e}")
 
