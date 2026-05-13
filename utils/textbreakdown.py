@@ -82,10 +82,20 @@ def parse_lms_to_dic(raw_input: str) -> dict:
 
     # ---------- 4) 安全取值工具，避免 iloc[0] 越界 ----------
     def safe_pick(field_name: str, section_name: str, default=None):
-        ser = df.loc[(df["field"] == field_name) & (df["section"] == section_name), "value"]
+        ser = df.loc[
+            (df["field"] == field_name) & (df["section"] == section_name),
+            "value"
+        ]
         if ser.empty:
             return default
-        return ser.iloc[0]
+    
+        value = ser.iloc[0]
+    
+        if isinstance(value, str) and "Day" in value:
+            value = value.replace("Day", "").strip()
+    
+        return value
+
 
     # ---------- 5) Waive Items 转负（若存在则 -abs(...)，否则为 0.0/None） ----------
     def negate_abs(val):
@@ -116,7 +126,7 @@ def parse_lms_to_dic(raw_input: str) -> dict:
         "repayment_date": safe_pick("Repayment Date", "Payment Details", default=None),
 
         # 参数
-        "sme_tenor": safe_pick("Tenor (Days)", "SME Information", default=None),
+        "sme_tenor": safe_pick("Tenor", "SME Information", default=None),
         "sme_mit": safe_pick("MIT (Days)", "SME Information", default=None),
 
         # 金额类
