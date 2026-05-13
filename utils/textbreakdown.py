@@ -91,8 +91,8 @@ def parse_lms_to_dic(raw_input: str) -> dict:
     
         value = ser.iloc[0]
     
-        if isinstance(value, str) and "Day" in value:
-            value = value.replace("Day", "").strip()
+        if isinstance(value, str) and "day" in value.lower():
+            value = value.replace("Day", "").replace("day", "").strip()
     
         return value
 
