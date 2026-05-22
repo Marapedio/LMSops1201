@@ -146,7 +146,7 @@ def parse_lms_to_dic(raw_input: str) -> dict:
         "waived_smeodint": negate_abs(safe_pick("Overdue Interest", "Waive Items", default=None)),
 
         # Return to borrower
-        "rtb_sys": safe_pick("Return to borrower", "SME Transaction", default=0.0),
+        "rtb_sys": safe_pick("Return To Borrower", "SME Transaction", default=0.0),
 
         # 资金方
         "funder_id": str(safe_pick("Funder ID", "Funder Information", default=None)),
