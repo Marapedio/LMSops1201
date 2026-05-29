@@ -335,7 +335,7 @@ if output_button and raw_input.strip():
 
         with col1:
             #for calcu
-            threshold = 0.1
+            threshold = 0.02
             def check_differences(system,calculation, threshold):
                 status = "ok" if abs(calculation - system) < threshold else "err"
                 return abs(calculation - system), f"{status}: {round(calculation - system,2)}"
