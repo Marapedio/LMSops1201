@@ -354,7 +354,7 @@ if output_button and raw_input.strip():
                 st.metric(label="Spreading:", value=f"{spreading_checker}")
 
             warnings = []
-            if outstanding_principal - principal < 10 and outstanding_principal - principal >= 0.01:
+            if outstanding_principal - principal < 10 and outstanding_principal - principal > 0.001:
                 warnings.append("⚠️ Fully settle failed: outstanding_principal - principal_amount < 10")
     
             left = principal + funder_sysint - platform_fee + spreading_sysint + rtb_sys
