@@ -138,7 +138,7 @@ def get_rate_type(rate_info):
 opstype = st.sidebar.selectbox("OpsType", ["Repayment", "Rollover"], index=0)
 maker_name = st.sidebar.text_input("Maker Name")
 # ------------------ Main PAGE: Column 1 ------------------------------------
-st.header("Data Processer")
+st.header("Data Processor")
 col1, col2 = st.columns([3, 2])
 with col1:
     subcol1, subcol2, subcol3 = st.columns([3,1,1])
