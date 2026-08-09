@@ -52,3 +52,60 @@ maker_data = {
         "Note": "",
         "Note2":""# this one is for csv reference number
     }
+
+hibor_refixing_date = {
+    date(2024, 9, 16): 1.8453,
+    date(2024, 10, 15): 2.35242,
+    date(2024, 11, 15): 3.72318,
+    date(2024, 12, 16): 3.72121,
+    date(2025, 1, 15): 2.83682,
+    date(2025, 2, 17): 2.72545,
+    date(2025, 3, 17): 1.99697,
+    date(2025, 4, 15): 1.53121,
+    date(2025, 5, 15): 1.65485,
+    date(2025, 6, 16): 1.70455,
+    date(2025, 7, 15): 1.74394,
+    date(2025, 8, 15): 1.71,
+    date(2025, 9, 15): 1.62909,
+    date(2025, 10, 15): 1.72879,
+    date(2025, 11, 17): 1.70727,
+    date(2025, 12, 15): 1.78091,
+    date(2026, 1, 15): 1.88152,
+    date(2026, 2, 13): 1.66485,
+    date(2026, 3, 16): 1.63697,
+    date(2026, 4, 15): 1.53970,
+    date(2026, 5, 15): 1.42212,
+    date(2026, 6, 15): 1.46667,
+    date(2026, 7, 15): 1.50,
+}
+hibor_refixing = []
+
+effective_dates = sorted(hibor_refixing_date.keys())
+
+for i, effective_date in enumerate(effective_dates):
+
+    start_date = effective_date.fromordinal(
+        effective_date.toordinal() + 1
+    )
+
+    if i < len(effective_dates) - 1:
+        end_date = effective_dates[i + 1]
+    else:
+        end_date = sofr_df["Calculation Date"].max()
+
+    rate = hibor_refixing_date[effective_date]
+
+    d = start_date
+
+    while d <= end_date:
+        hibor_refixing.append(
+            {
+                "Calculation Date": d,
+                "HIBOR Refixing": rate,
+            }
+        )
+
+        d = date.fromordinal(
+            d.toordinal() + 1
+        )
+hibor_refixing_df = pd.DataFrame(hibor_refixing)
