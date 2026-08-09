@@ -1,4 +1,5 @@
 from datetime import date, datetime, timedelta
+import pandas as pd
 
 defaults = {
     "drawdown_id": "",
