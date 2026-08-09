@@ -110,3 +110,26 @@ for i, effective_date in enumerate(effective_dates):
             d.toordinal() + 1
         )
 hibor_refixing_df = pd.DataFrame(hibor_refixing)
+
+
+
+def hibor_cal(sme_drawdown, repayment_date, sofr_df, sme_mit_days, hibor_refixing_df):
+    # Merge the two DataFrames on "Calculation Date"
+    hibor_df = pd.merge(sofr_df, hibor_refixing_df, on="Calculation Date", how="left")
+    hibor_df = hibor_df.loc[(hibor_df["Calculation Date"] >= sme_drawdown) &(hibor_df["Calculation Date"] <= repayment_date)]
+    refixing_dates_hit = [ d for d in hibor_refixing_date.keys() if sme_drawdown <= d <= repayment_date]
+    first_refixing_date = (min(refixing_dates_hit) if refixing_dates_hit else None)
+    sme_drawdown_hibor = sofr_df.loc[sofr_df["Calculation Date"] == sme_drawdown,"Daily Calculated Blended HIBOR"].iloc[0]
+    if (repayment_date - sme_drawdown).days + 1 <= sme_mit_days.days:
+        hibor_df["Applied HIBOR"] = sme_drawdown_hibor
+    elif first_refixing_date is not None:
+        hibor_df["Applied HIBOR"] =  hibor_df.apply(
+            lambda row: sme_drawdown_hibor
+            if row["Calculation Date"] <= first_refixing_date
+            else row["HIBOR Refixing"],
+            axis=1
+        )
+    else:
+        hibor_df["Applied HIBOR"] = sme_drawdown_hibor
+    hibor_df = hibor_df[["Calculation Date","Applied HIBOR"]]
+    return hibor_df
