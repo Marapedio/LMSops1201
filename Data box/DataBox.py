@@ -265,11 +265,12 @@ if output_button and raw_input.strip():
         regul_floatsum = sofr_df.loc[(sofr_df['Calculation Date'] > sme_drawdown_cal) & 
                                     (sofr_df['Calculation Date'] <= repayment_date), float_rate].sum()
         overdue_interest = 0
-        if repayment_date <= mit_repaydate:
-            note = "MIT"
-            mit_fillrate = sofr_df.loc[(sofr_df['Calculation Date'] == repayment_date), float_rate].iloc[0]
-            floatsum = (sme_mit  - hdays) * mit_fillrate + regul_floatsum
-            hdays = sme_mit
+        if  opstype == "Repayment":
+            if repayment_date <= mit_repaydate:
+                note = "MIT"
+                mit_fillrate = sofr_df.loc[(sofr_df['Calculation Date'] == repayment_date), float_rate].iloc[0]
+                floatsum = (sme_mit  - hdays) * mit_fillrate + regul_floatsum
+                hdays = sme_mit
         elif repayment_date > expected_repaydate:
             note = "Overdue"
             floatsum = regul_floatsum
