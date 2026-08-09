@@ -255,7 +255,12 @@ if output_button and raw_input.strip():
 
 
 
-        float_rate = 'Daily Calculated Blended HIBOR' if ratetype == 'HIBOR+' else 'SOFR'
+        #previous hiborcCAL : float_rate = 'Daily Calculated Blended HIBOR' if ratetype == 'HIBOR+' else 'SOFR'
+        if ratetype == 'HIBOR+':
+            sofr_df = hibor_cal(sme_drawdown, repayment_date, sofr_df, sme_mit_days, hibor_refixing_df)
+            float_rate = 'Applied HIBOR'
+        else:
+            float_rate = 'SOFR'
         hdays = (repayment_date - sme_drawdown_cal).days
         regul_floatsum = sofr_df.loc[(sofr_df['Calculation Date'] > sme_drawdown_cal) & 
                                     (sofr_df['Calculation Date'] <= repayment_date), float_rate].sum()
