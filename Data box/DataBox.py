@@ -375,9 +375,6 @@ if output_button and raw_input.strip():
             if opstype == "Repayment":
                 if rtb_sys != 0:
                     warnings.append(f"⚠️ Condition failed: rtb_sys should be 0, but is {rtb_sys}")
-            if opstype == "Rollover":
-                if note = "MIT":
-                    warnings.append("⚠️ MIT Rollover detected. Manual verification required.")
                 
                 
             st.session_state.warnings = warnings
