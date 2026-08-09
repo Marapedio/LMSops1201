@@ -91,7 +91,7 @@ for i, effective_date in enumerate(effective_dates):
     if i < len(effective_dates) - 1:
         end_date = effective_dates[i + 1]
     else:
-        end_date = sofr_df["Calculation Date"].max()
+        end_date = date(2030, 12, 31)
 
     rate = hibor_refixing_date[effective_date]
 
