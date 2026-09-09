@@ -448,7 +448,7 @@ if output_button and raw_input.strip():
             st.write("SME Overdue Interest",overdue_interest)
             st.write("Funder Interest",funder_interest)
             st.write("interestsum", regul_floatsum)
-            st.write(
+            print(
     hibor_df[
         hibor_df["Calculation Date"] == pd.Timestamp("2026-08-24")
     ][
