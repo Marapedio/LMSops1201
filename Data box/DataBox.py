@@ -448,18 +448,7 @@ if output_button and raw_input.strip():
             st.write("SME Overdue Interest",overdue_interest)
             st.write("Funder Interest",funder_interest)
             st.write("interestsum", regul_floatsum)
-            print(
-    hibor_df[
-        hibor_df["Calculation Date"] == pd.Timestamp("2026-08-24")
-    ][
-        [
-            "Calculation Date",
-            "Daily Calculated Blended HIBOR",
-            "HIBOR Refixing",
-            "Applied HIBOR",
-        ]
-    ]
-)
+            st.dataframe(sofr_df)
             
 
 if output_button and not raw_input.strip():
