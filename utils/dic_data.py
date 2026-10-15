@@ -80,6 +80,7 @@ hibor_refixing_date = {
     date(2026, 7, 15): 1.50,
     date(2026, 8, 17): 1.524850,
     date(2026, 9, 15): 1.523940,
+    date(2026, 10, 15): 1.574850,
 }
 hibor_refixing = []
 
