@@ -449,20 +449,6 @@ if output_button and raw_input.strip():
             st.write("Funder Interest",funder_interest)
             st.write("interestsum", regul_floatsum)
             st.dataframe(sofr_df)
-            st.write(
-    hibor_df.loc[
-        hibor_df["Calculation Date"].between(
-            date(2026, 10, 14),
-            date(2026, 10, 17)
-        ),
-        [
-            "Calculation Date",
-            "Daily Calculated Blended HIBOR",
-            "HIBOR Refixing",
-            "Applied HIBOR"
-        ]
-    ]
-)
             
 
 if output_button and not raw_input.strip():
